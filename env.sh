@@ -1,12 +1,12 @@
 conda activate acg
 
 # === Quick path: no preprocessing (84x84 decoding) ===
-n_mg="30"
+n_mg="1000"
 export DEXMG_VIDEO_RESOLUTION="84x84"   # fast decoding, lower resolution
 note="_${DEXMG_VIDEO_RESOLUTION}"
 
 # === Experiment setup ===
-steps="60000"
+steps="6000"
 ngpu="1"
 bs="2"
 ga="64"
@@ -49,7 +49,7 @@ note=""
 n_rollouts="24"
 num_batch_envs="1"
 export MAX_NUM_EMBODIMENTS="35"
-dataset_name="dexmg_mg30"
+dataset_name="dexmg_mg1000"
 config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
 model_path="DAVIAN-Robotics/GR00T-N1-2B-tuned-DexMG-MG100-CrossEmbodiments"
 seed="123"
@@ -62,7 +62,7 @@ note=""
 n_rollouts="24"
 num_batch_envs="1"
 export MAX_NUM_EMBODIMENTS="35"
-dataset_name="dexmg_mg30"
+dataset_name="dexmg_mg1000"
 config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
 model_path="DAVIAN-Robotics/GR00T-N1-2B-tuned-DexMG-MG100-CrossEmbodiments"
 
