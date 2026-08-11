@@ -1,3 +1,5 @@
+conda activate acg
+
 # === Quick path: no preprocessing (84x84 decoding) ===
 n_mg="30"
 export DEXMG_VIDEO_RESOLUTION="84x84"   # fast decoding, lower resolution
@@ -6,8 +8,8 @@ note="_${DEXMG_VIDEO_RESOLUTION}"
 # === Experiment setup ===
 steps="60000"
 ngpu="1"
-bs="64"
-ga="2"
+bs="2"
+ga="64"
 training_seed="42"
 exp_name="MG${n_mg}/LR=1e-4_Bs=${ngpu}x${bs}x${ga}_Steps=${steps}_Seed=${training_seed}${note}"
 model_path="/mnt/2t/myh/experiment/checkpoints/nvidia/GR00T-N1-2B"
@@ -35,8 +37,9 @@ python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_robocasa.py \
   --dataset_cls=dexmg \
   --pin_memory \
   --training_seed ${training_seed} \
-  --base_model_path ${model_path}
-
+  --base_model_path ${model_path} \
+  --lora-rank 16 \
+  --lora-alpha 32
 
 
 

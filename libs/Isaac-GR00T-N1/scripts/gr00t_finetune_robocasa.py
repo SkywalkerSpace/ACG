@@ -308,7 +308,7 @@ def main(config: Config):
         run_name=config.exp_name,
         remove_unused_columns=False,
         deepspeed="",
-        gradient_checkpointing=False,
+        gradient_checkpointing=True,
         bf16=True,
         tf32=True,
         per_device_train_batch_size=config.batch_size,
