@@ -10,11 +10,11 @@ bs="64"
 ga="2"
 training_seed="42"
 exp_name="MG${n_mg}/LR=1e-4_Bs=${ngpu}x${bs}x${ga}_Steps=${steps}_Seed=${training_seed}${note}"
-model_path="/mnt/2t/myh-bak/experiment/checkpoints/nvidia/GR00T-N1-2B"
+model_path="/mnt/2t/myh/experiment/checkpoints/nvidia/GR00T-N1-2B"
 
 # === Logging (Weights & Biases) ===
-export WANDB_ENTITY="your-entity"
-export WANDB_PROJECT="Your Robot Project"
+export WANDB_ENTITY="Entity"
+export WANDB_PROJECT="Robot Project"
 
 # === Launch training ===
 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_robocasa.py \
