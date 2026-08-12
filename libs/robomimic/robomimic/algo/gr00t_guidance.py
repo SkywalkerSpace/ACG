@@ -44,7 +44,7 @@ class GR00T_Guidance_Robomimic(GR00T_Robomimic):
         # additional options
         self.policy_get_action_kwargs = self.algo_config.guidance.to_dict()
 
-    def get_action(self, obs_dict, goal_dict=None, **kwargs):
+    def get_action(self, obs_dict, goal_dict=None):
         self.policy.modality_transform.eval()
         self.policy.model.eval()
 
