@@ -141,12 +141,12 @@ CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_rob
 
 # === DexMG rollout: without guidance ===
 note=""
-n_rollouts="24"
-num_batch_envs="2"
+n_rollouts="5"
+num_batch_envs="1"
 export MAX_NUM_EMBODIMENTS="35"
 dataset_name="dexmg_mg1000"
 config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
-model_path="/home/mayuhang/ACG/checkpoints/dexmg/MG1000/checkpoint-60000/"
+model_path="/home/mayuhang/ACG/checkpoints/dexmg/MG1000/checkpoint-1000/"
 seed="42"
 
 bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg
