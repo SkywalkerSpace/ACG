@@ -115,7 +115,7 @@ class Config:
     tune_llm: bool = False
     """Whether to fine-tune the language model backbone."""
 
-    tune_visual: bool = False
+    tune_visual: bool = True
     """Whether to fine-tune the vision tower."""
 
     tune_projector: bool = True
@@ -292,7 +292,7 @@ def main(config: Config):
     # Set the model's compute_dtype to bfloat16
     model.compute_dtype = "bfloat16"
     model.config.compute_dtype = "bfloat16"
-    model = model.to(torch.bfloat16)
+    # model = model.to(torch.bfloat16)
 
     if config.lora_rank > 0:
         model = get_lora_model(
@@ -309,7 +309,7 @@ def main(config: Config):
         run_name=config.exp_name,
         remove_unused_columns=False,
         deepspeed="",
-        gradient_checkpointing=True,
+        gradient_checkpointing=False,  # True
         bf16=True,
         tf32=True,
         per_device_train_batch_size=config.batch_size,
