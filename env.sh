@@ -56,7 +56,7 @@ model_path="/mnt/2t/myh/experiment/checkpoints/nvidia/GR00T-N1-2B"
 lora_path="/home/ubuntu/myh/experiment/ACG/checkpoints/dexmg/MG1000/LR=1e-4_Bs=1x2x64_Steps=6000_Seed=42_84x84/checkpoint-6000/"
 seed="123"
 
-bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg ${lora_path}
+bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" ${lora_path} algo_name=gr00t_guidance_dexmg
 
 
 # === DexMG rollout: with ACG ===
