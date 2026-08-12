@@ -1,5 +1,12 @@
 conda activate acg
 
+pip config set global.index-url https://mirrors.cernet.edu.cn/pypi/web/simple
+
+export HF_ENDPOINT=https://hf-mirror.com
+
+export WANDB_API_KEY=""
+
+
 # === Quick path: no preprocessing (84x84 decoding) ===
 n_mg="1000"
 export DEXMG_VIDEO_RESOLUTION="84x84"   # fast decoding, lower resolution
@@ -98,8 +105,8 @@ exp_name="MG${n_mg}/LR=1e-4_Bs=${ngpu}x${bs}x${ga}_Steps=${steps}_Seed=${trainin
 model_path="/home/mayuhang/models/GR00T-N1-2B"
 
 # === Logging (Weights & Biases) ===
-export WANDB_ENTITY="Entity"
-export WANDB_PROJECT="Robot Project"
+export WANDB_ENTITY="skywalkerm-no"
+export WANDB_PROJECT="ACG"
 
 # === Launch training ===
 CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_robocasa.py \
@@ -120,7 +127,15 @@ CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_rob
   --dataset_cls=dexmg \
   --pin_memory \
   --training_seed ${training_seed} \
-  --base_model_path ${model_path}
+  --base_model_path ${model_path} \
+  --no-tune-visual
 
 
+
+# === Experiment setup (LoRA) ===
+  --lora_rank 16 \
+  --lora_alpha 32 \
+  --dataloader_num_workers 8 \
+  bs="8"    # 从 64 降低到 8 (如果还是 OOM，可以进一步降到 4)
+  ga="16"   # 相应增加梯度累加，维持等效 Batch Size：3 * 8 * 16 = 384
 
