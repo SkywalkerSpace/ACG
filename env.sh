@@ -119,11 +119,10 @@ CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_rob
   --batch_size ${bs} \
   --robomimic_config_json libs/Isaac-GR00T-N1/robomimic_configs/dexmg_mg${n_mg}_6.json \
   --gradient_accumulation_steps ${ga} \
-  --no-save-only-model \
-  --dataloader_num_workers 16 \
+  --dataloader_num_workers 2 \
   --max-steps ${steps} \
   --save_steps 1000 \
-  --save_total_limit 3 \
+  --save_total_limit 1 \
   --dataset_cls=dexmg \
   --pin_memory \
   --training_seed ${training_seed} \
@@ -135,7 +134,19 @@ CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_rob
 # === Experiment setup (LoRA) ===
   --lora_rank 16 \
   --lora_alpha 32 \
-  --dataloader_num_workers 8 \
   bs="8"    # 从 64 降低到 8 (如果还是 OOM，可以进一步降到 4)
   ga="16"   # 相应增加梯度累加，维持等效 Batch Size：3 * 8 * 16 = 384
 
+
+
+# === DexMG rollout: without guidance ===
+note=""
+n_rollouts="24"
+num_batch_envs="2"
+export MAX_NUM_EMBODIMENTS="35"
+dataset_name="dexmg_mg1000"
+config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
+model_path="/home/mayuhang/ACG/checkpoints/dexmg/MG1000/checkpoint-60000/"
+seed="42"
+
+bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg
