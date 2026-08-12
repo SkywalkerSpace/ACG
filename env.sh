@@ -81,3 +81,46 @@ seed="123"
 bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg ${acg_options}
 
 
+
+
+# === Quick path: no preprocessing (84x84 decoding) ===
+n_mg="1000"
+export DEXMG_VIDEO_RESOLUTION="84x84"   # fast decoding, lower resolution
+note="_${DEXMG_VIDEO_RESOLUTION}"
+
+# === Experiment setup ===
+steps="60000"
+ngpu="3"
+bs="64"
+ga="2"
+training_seed="42"
+exp_name="MG${n_mg}/LR=1e-4_Bs=${ngpu}x${bs}x${ga}_Steps=${steps}_Seed=${training_seed}${note}"
+model_path="/home/mayuhang/models/GR00T-N1-2B"
+
+# === Logging (Weights & Biases) ===
+export WANDB_ENTITY="Entity"
+export WANDB_PROJECT="Robot Project"
+
+# === Launch training ===
+CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_robocasa.py \
+  --num-gpus ${ngpu} \
+  --output-dir checkpoints/dexmg/${exp_name} \
+  --data-configs dexmg_bimanual_panda_gripper dexmg_bimanual_panda_hand dexmg_gr1_arms_only dexmg_gr1_arms_only \
+  --video-backend decord \
+  --embodiment_tag single_panda_gripper \
+  --exp_name ${exp_name} \
+  --batch_size ${bs} \
+  --robomimic_config_json libs/Isaac-GR00T-N1/robomimic_configs/dexmg_mg${n_mg}_6.json \
+  --gradient_accumulation_steps ${ga} \
+  --no-save-only-model \
+  --dataloader_num_workers 16 \
+  --max-steps ${steps} \
+  --save_steps 1000 \
+  --save_total_limit 3 \
+  --dataset_cls=dexmg \
+  --pin_memory \
+  --training_seed ${training_seed} \
+  --base_model_path ${model_path}
+
+
+

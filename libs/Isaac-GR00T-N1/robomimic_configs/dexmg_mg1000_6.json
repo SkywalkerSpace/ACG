@@ -48,45 +48,45 @@
     "data_format": "dexmg",
     "data": [
       {
-        "path": "/mnt/2t/myh/experiment/checkpoints/two_arm_box_cleanup.hdf5",
+        "path": "/home/mayuhang/datasets/dexmimicgen_datasets/two_arm_box_cleanup.hdf5",
         "horizon": 400,
         "do_eval": true,
-        "filter_key": "/home/ubuntu/myh/experiment/ACG/data/splits/dexmimicgen/1000_demos.json",
+        "filter_key": "/home/mayuhang/ACG/data/splits/dexmimicgen/1000_demos.json",
         "lang": "move the box lid onto the box"
       },
       {
-        "path": "/mnt/2t/myh/experiment/checkpoints/two_arm_drawer_cleanup.hdf5",
+        "path": "/home/mayuhang/datasets/dexmimicgen_datasets/two_arm_drawer_cleanup.hdf5",
         "horizon": 550,
         "do_eval": true,
-        "filter_key": "/home/ubuntu/myh/experiment/ACG/data/splits/dexmimicgen/1000_demos.json",
+        "filter_key": "/home/mayuhang/ACG/data/splits/dexmimicgen/1000_demos.json",
         "lang": "pick the cup and open the drawer, then put the cup in the drawer and close the drawer"
       },
       {
-        "path": "/mnt/2t/myh/experiment/checkpoints/two_arm_lift_tray.hdf5",
+        "path": "/home/mayuhang/datasets/dexmimicgen_datasets/two_arm_lift_tray.hdf5",
         "horizon": 750,
         "do_eval": true,
-        "filter_key": "/home/ubuntu/myh/experiment/ACG/data/splits/dexmimicgen/1000_demos.json",
+        "filter_key": "/home/mayuhang/ACG/data/splits/dexmimicgen/1000_demos.json",
         "lang": "put the two objects in the tray and then lift the tray"
       },
       {
-        "path": "/mnt/2t/myh/experiment/checkpoints/two_arm_can_sort_random.hdf5",
+        "path": "/home/mayuhang/datasets/dexmimicgen_datasets/two_arm_can_sort_random.hdf5",
         "horizon": 400,
         "do_eval": true,
-        "filter_key": "/home/ubuntu/myh/experiment/ACG/data/splits/dexmimicgen/1000_demos.json",
+        "filter_key": "/home/mayuhang/ACG/data/splits/dexmimicgen/1000_demos.json",
         "lang": "pick the can and put it in the box"
       },
       {
-        "path": "/mnt/2t/myh/experiment/checkpoints/two_arm_pouring.hdf5",
+        "path": "/home/mayuhang/datasets/dexmimicgen_datasets/two_arm_pouring.hdf5",
         "horizon": 400,
         "do_eval": true,
-        "filter_key": "/home/ubuntu/myh/experiment/ACG/data/splits/dexmimicgen/1000_demos.json",
+        "filter_key": "/home/mayuhang/ACG/data/splits/dexmimicgen/1000_demos.json",
         "lang": "pick the cup and open the drawer, then put the cup in the drawer and close the drawer"
       },
       {
-        "path": "/mnt/2t/myh/experiment/checkpoints/two_arm_coffee.hdf5",
+        "path": "/home/mayuhang/datasets/dexmimicgen_datasets/two_arm_coffee.hdf5",
         "horizon": 400,
         "do_eval": true,
-        "filter_key": "/home/ubuntu/myh/experiment/ACG/data/splits/dexmimicgen/1000_demos.json",
+        "filter_key": "/home/mayuhang/ACG/data/splits/dexmimicgen/1000_demos.json",
         "lang": "insert the coffee pod into the coffee machine and close the lid"
       }
     ],
