@@ -21,7 +21,7 @@ from robomimic.utils.script_utils import deep_update
 from tools_mpark.dictaction import DictAction
 
 
-def train(config, device):
+def train(config, device, lora_path=None):
     """
     Train a model using the algorithm.
     """
@@ -142,6 +142,40 @@ def train(config, device):
         device=device,
     )
 
+    # ==========================================
+    # Inject LoRA weights for Policy Network
+    # ==========================================
+    if lora_path and os.path.exists(lora_path):
+        print(f"Injecting LoRA weights from: {lora_path}")
+        from peft import PeftModel
+        
+        target_net_key = "policy" 
+        
+        if target_net_key in model.nets:
+            base_net = model.nets[target_net_key]
+            
+            # 【新增安全检查】：确认 base_net 确实包含 action_head
+            if hasattr(base_net, 'action_head'):
+                print("✓ 校验通过：目标网络包含 'action_head' 子模块，符合 LoRA 权重结构。")
+            else:
+                try:
+                    children_names = [name for name, _ in base_net.named_children()]
+                    print(f"⚠ 警告：目标网络中未发现 'action_head' 属性！当前子模块有: {children_names}")
+                except Exception as e:
+                    print(f"⚠ 警告：无法确认是否包含 'action_head' 属性！")
+            
+            # Wrap the base policy network with the PEFT model
+            model.nets[target_net_key] = PeftModel.from_pretrained(
+                base_net, 
+                lora_path, 
+                is_trainable=False
+            ).to(device)
+            print(f"Successfully applied LoRA adapter to model.nets['{target_net_key}'].")
+        else:
+            print(f"Warning: Target network '{target_net_key}' not found in model.nets. Available keys: {list(model.nets.keys())}")
+            print("LoRA weights were NOT loaded.")
+    # ==========================================
+
     # wrap model as a RolloutPolicy to prepare for rollouts
     rollout_model = RolloutPolicyWOLangEncoder(
         model,
@@ -185,8 +219,8 @@ def main(args):
     # lock config to prevent further modifications and ensure missing keys raise errors
     config.lock()
 
-    # print(config)
-    train(config, device=device)
+    # Pass the lora_path argument down to the train function
+    train(config, device=device, lora_path=args.lora_path)
     print("finished run successfully!")
 
 
@@ -195,6 +229,9 @@ if __name__ == "__main__":
 
     parser.add_argument("--config", type=str, help="path to a config json.", required=True)
     parser.add_argument("--config_add", action=DictAction, nargs='+', default=dict())
+    
+    # New argument to parse the LoRA directory path from CLI
+    parser.add_argument("--lora_path", type=str, default=None, help="Path to the LoRA adapter directory containing safetensors.")
 
     args = parser.parse_args()
 

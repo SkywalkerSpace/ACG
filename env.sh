@@ -51,10 +51,12 @@ num_batch_envs="1"
 export MAX_NUM_EMBODIMENTS="35"
 dataset_name="dexmg_mg1000"
 config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
-model_path="DAVIAN-Robotics/GR00T-N1-2B-tuned-DexMG-MG100-CrossEmbodiments"
+# model_path="/mnt/2t/myh/experiment/checkpoints/DAVIAN-Robotics/GR00T-N1-2B-tuned-DexMG-MG100-CrossEmbodiments"
+model_path="/mnt/2t/myh/experiment/checkpoints/nvidia/GR00T-N1-2B"
+lora_path="/home/ubuntu/myh/experiment/ACG/checkpoints/dexmg/MG1000/LR=1e-4_Bs=1x2x64_Steps=6000_Seed=42_84x84/checkpoint-6000/"
 seed="123"
 
-bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg
+bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg ${lora_path}
 
 
 # === DexMG rollout: with ACG ===
@@ -64,7 +66,8 @@ num_batch_envs="1"
 export MAX_NUM_EMBODIMENTS="35"
 dataset_name="dexmg_mg1000"
 config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
-model_path="DAVIAN-Robotics/GR00T-N1-2B-tuned-DexMG-MG100-CrossEmbodiments"
+model_path="/mnt/2t/myh/experiment/checkpoints/nvidia/GR00T-N1-2B"
+lora_path="/home/ubuntu/myh/experiment/ACG/checkpoints/dexmg/MG1000/LR=1e-4_Bs=1x2x64_Steps=6000_Seed=42_84x84/checkpoint-6000/adapter_model.safetensors"
 
 acg_options="
 algo.guidance.name=acg
