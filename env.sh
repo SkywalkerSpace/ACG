@@ -141,12 +141,29 @@ CUDA_VISIBLE_DEVICES=1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_rob
 
 # === DexMG rollout: without guidance ===
 note=""
-n_rollouts="4"
-num_batch_envs="2"
+n_rollouts="8"
+num_batch_envs="1"
 export MAX_NUM_EMBODIMENTS="35"
 dataset_name="dexmg_mg1000"
 config_path="libs/Isaac-GR00T-N1/robomimic_configs/${dataset_name}_6.json"
-model_path="/home/mayuhang/ACG/checkpoints/dexmg/MG1000/checkpoint-1000/"
+model_path="/home/mayuhang/ACG/checkpoints/dexmg/MG1000/checkpoint-60000/"
 seed="42"
 
 bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} ${num_batch_envs} "${note}" algo_name=gr00t_guidance_dexmg
+
+
+
+
+# === 10_nvidia.json ===
+# 1. 确保目录存在
+mkdir -p /usr/share/glvnd/egl_vendor.d/
+
+# 2. 写入配置文件（根据之前查到的实际版本号）
+cat <<EOF > /usr/share/glvnd/egl_vendor.d/10_nvidia.json
+{
+    "file_format_version" : "1.0.0",
+    "ICD" : {
+        "library_path" : "libEGL_nvidia.so.595.71.05"
+    }
+}
+EOF
