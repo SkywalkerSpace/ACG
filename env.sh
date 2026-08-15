@@ -222,7 +222,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_r
   --robomimic_config_json libs/Isaac-GR00T-N1/robomimic_configs/dexmg_mg${n_mg}_6.json \
   --gradient_accumulation_steps ${ga} \
   --save-only-model \
-  --dataloader_num_workers 16 \
+  --dataloader_num_workers 8 \
   --max-steps ${steps} \
   --save_steps 1000 \
   --save_total_limit 2 \
