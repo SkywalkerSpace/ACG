@@ -167,3 +167,67 @@ cat <<EOF > /usr/share/glvnd/egl_vendor.d/10_nvidia.json
     }
 }
 EOF
+
+
+
+
+export DATASET_ROOT="/home/mayuhang/datasets"  # fill in your dataset root path
+
+# Replay and save videos for each task and camera view
+task_name="two_arm_box_cleanup"             ; render_image_name="agentview"             ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_box_cleanup"             ; render_image_name="robot0_eye_in_hand"    ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_box_cleanup"             ; render_image_name="robot1_eye_in_hand"    ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_drawer_cleanup"          ; render_image_name="agentview"             ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_drawer_cleanup"          ; render_image_name="robot0_eye_in_hand"    ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_drawer_cleanup"          ; render_image_name="robot1_eye_in_hand"    ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_lift_tray"               ; render_image_name="agentview"             ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_lift_tray"               ; render_image_name="robot0_eye_in_hand"    ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_lift_tray"               ; render_image_name="robot1_eye_in_hand"    ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_can_sort_random"         ; render_image_name="agentview"             ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_coffee"                  ; render_image_name="agentview"             ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+task_name="two_arm_pouring"                 ; render_image_name="agentview"             ; python libs/dexmimicgen/scripts/playback_datasets_save_videos.py --dataset ${DATASET_ROOT}/dexmimicgen/generated/${task_name}.hdf5 --video_skip 1 --video_dir ${DATASET_ROOT}/dexmimicgen/generated/videos_256x256/${task_name}/obs/${render_image_name}_image --n 1000 --render_image_names ${render_image_name}
+
+export DATASET_ROOT="/home/mayuhang/datasets"  # fill in your dataset root path
+
+# Each index (task index) corresponds to one parallel conversion job.
+python libs/dexmimicgen/scripts/convert_videos_to_hdf5.py
+
+
+# === Recommended path: preprocessed videos (256x256) ===
+n_mg="1000"
+export DEXMG_VIDEO_RESOLUTION="256x256" # preprocessed, high-quality frames
+note="_${DEXMG_VIDEO_RESOLUTION}"
+
+# === Logging (Weights & Biases) ===
+steps="60000"
+ngpu="4"
+bs="32"
+ga="1"
+training_seed="42"
+exp_name="MG${n_mg}/LR=1e-4_Bs=${ngpu}x${bs}x${ga}_Steps=${steps}_Seed=${training_seed}${note}"
+model_path="/home/mayuhang/models/GR00T-N1-2B"
+
+# === Launch training ===
+export WANDB_ENTITY="skywalkerm-no"
+export WANDB_PROJECT="ACG"
+
+CUDA_VISIBLE_DEVICES=0,1,2,3 python libs/Isaac-GR00T-N1/scripts/gr00t_finetune_robocasa.py \
+  --num-gpus ${ngpu} \
+  --output-dir checkpoints/dexmg/${exp_name} \
+  --data-configs dexmg_bimanual_panda_gripper dexmg_bimanual_panda_hand dexmg_gr1_arms_only dexmg_gr1_arms_only \
+  --video-backend decord \
+  --embodiment_tag single_panda_gripper \
+  --exp_name ${exp_name} \
+  --batch_size ${bs} \
+  --robomimic_config_json libs/Isaac-GR00T-N1/robomimic_configs/dexmg_mg${n_mg}_6.json \
+  --gradient_accumulation_steps ${ga} \
+  --save-only-model \
+  --dataloader_num_workers 2 \
+  --max-steps ${steps} \
+  --save_steps 1000 \
+  --save_total_limit 2 \
+  --dataset_cls=dexmg \
+  --pin_memory \
+  --training_seed ${training_seed} \
+  --base_model_path ${model_path} \
+  --no-tune-visual
